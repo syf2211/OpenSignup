@@ -4,6 +4,8 @@ import {
   NEVER_INVENT_HEAD,
   NEVER_INVENT_TAIL,
   RULES_IN_BOTH,
+  USE_CAPACITY_NOT_DUPLICATE_ROWS,
+  USE_DATE_AND_TIME_FIELDS,
   neverInventRule,
 } from './signup-rules';
 
@@ -19,6 +21,16 @@ describe('shared signup rules', () => {
     // The prompt renderer replaces only the first {{TODAY}} it finds.
     for (const rule of [FIELD_TYPE_GUIDE, ...RULES_IN_BOTH]) {
       expect(rule).not.toContain('{{TODAY}}');
+    }
+  });
+});
+
+describe('rules written for assistants', () => {
+  it('are not yet shared with the Magic Compose prompt', () => {
+    // Adding one there changes the prompt's bytes, which needs an eval run.
+    for (const rule of [USE_DATE_AND_TIME_FIELDS, USE_CAPACITY_NOT_DUPLICATE_ROWS]) {
+      expect(rule.trim()).not.toBe('');
+      expect(RULES_IN_BOTH).not.toContain(rule);
     }
   });
 });
